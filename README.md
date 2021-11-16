@@ -1,1 +1,1 @@
-# basicweb-project
+# Basic Concepts of Web Technology course project
