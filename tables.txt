@@ -6,7 +6,7 @@ CREATE TABLE `user` (
   `password` varchar(255),
   `description` text,
   `role` varchar(255)
-);
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `user_post` (
   `id` int PRIMARY KEY NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE `user_post` (
   `text` text,
   `vote` text,
   `user_id` int
-);
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comments` (
   `id` int PRIMARY KEY NOT NULL,
@@ -24,4 +24,4 @@ CREATE TABLE `comments` (
   `vote` text,
   `user_post_id` int,
   `user_id` int
-);
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
