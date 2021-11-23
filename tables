@@ -1,0 +1,27 @@
+CREATE TABLE `user` (
+  `id` int PRIMARY KEY NOT NULL,
+  `profile` text(255),
+  `username` varchar(255),
+  `email` varchar(255),
+  `password` varchar(255),
+  `description` text,
+  `role` varchar(255)
+);
+
+CREATE TABLE `user_post` (
+  `id` int PRIMARY KEY NOT NULL,
+  `date` date,
+  `title` text(255),
+  `picture` text,
+  `text` text,
+  `vote` text,
+  `user_id` int
+);
+
+CREATE TABLE `comments` (
+  `id` int PRIMARY KEY NOT NULL,
+  `comment` text,
+  `vote` text,
+  `user_post_id` int,
+  `user_id` int
+);
