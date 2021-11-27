@@ -10,13 +10,16 @@
         "type": "git",
         "url": "git+https://github.com/ramizwd/basicweb-project.git"
     },
-    "author": "Ramiz W. | Johnkai Cortez | Pavlo Leinonen",
+    "author": "Ramiz W.",
     "license": "GNU-3",
     "bugs": {
         "url": "https://github.com/ramizwd/basicweb-project/issues"
     },
     "homepage": "https://github.com/ramizwd/basicweb-project#readme",
     "dependencies": {
-        "express": "^4.17.1"
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "mysql2": "^2.3.3"
     }
 }
