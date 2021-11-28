@@ -56,9 +56,27 @@ const insertUser = async (user, next) => {
     }
 };
 
+// Delete user from database
+const deleteUser = async (userId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `DELETE FROM user WHERE id = ?`,
+            [userId]
+        );
+
+        console.log('model user deleted', rows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        console.error('message', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Export all functions
 module.exports = {
     getAllUsers,
     getUser,
     insertUser,
+    deleteUser,
 };

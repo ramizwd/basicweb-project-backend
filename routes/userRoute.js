@@ -8,6 +8,7 @@ const {
     user_get_all,
     user_get,
     user_post,
+    delete_user,
 } = require('../controllers/userController');
 
 router
@@ -17,6 +18,9 @@ router
     // Using multer for handling 'multipart/form-data' file uploads and sending Post req to user_post.
     .post(upload.single('user'), user_post);
 
-router.route('/:userId').get(user_get); // Get user by id
+router
+    .route('/:userId')
+    .get(user_get) // Get user by id
+    .delete(delete_user); // Delete user by id
 
 module.exports = router;
