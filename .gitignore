@@ -379,3 +379,6 @@ $RECYCLE.BIN/
 *.lnk
 # IDE stuff...
 .idea/
+
+# Ignore REST client file
+request.rest
