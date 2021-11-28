@@ -10,11 +10,24 @@ const getAllUsers = async () => {
         const [rows] = await promisePool.query(`SELECT * FROM user`);
         return rows;
     } catch (e) {
-        console.error('error', e.message); // Catch and log eny errors.
+        console.error('error', e.message); // Catch and log any errors.
+    }
+};
+
+const getUser = async (userId) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `SELECT * FROM user WHERE id = ?`,
+            [userId]
+        );
+        return rows;
+    } catch (e) {
+        console.error('error', e.message);
     }
 };
 
 // Export all functions
 module.exports = {
     getAllUsers,
+    getUser,
 };
