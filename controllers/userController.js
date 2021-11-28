@@ -5,6 +5,7 @@ const {
     getUser,
     insertUser,
     deleteUser,
+    updateUser,
 } = require('../models/userModel');
 
 // Get all users from the database and send them in a JSON formatted response.
@@ -35,10 +36,17 @@ const delete_user = async (req, res, next) => {
     res.json({ message: `User deleted: ${deleted}` });
 };
 
+// Get user and send them to updateUser function
+const user_update = async (req, res, next) => {
+    const updated = await updateUser(req.body, next);
+    res.json({ message: `User Updated: ${updated}` });
+};
+
 // Export functions
 module.exports = {
     user_get_all,
     user_get,
     user_post,
     delete_user,
+    user_update,
 };

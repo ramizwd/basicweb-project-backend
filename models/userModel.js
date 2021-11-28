@@ -36,15 +36,8 @@ const getUser = async (userId, next) => {
 const insertUser = async (user, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `INSERT INTO user (id, username, email, password, description, role) VALUES (?,?,?,?,?,?)`,
-            [
-                user.id,
-                user.username,
-                user.email,
-                user.password,
-                user.description,
-                user.role,
-            ]
+            `INSERT INTO user (username, email, password) VALUES (?,?,?)`,
+            [user.username, user.email, user.password]
         );
 
         console.log('model insert user', rows);
@@ -73,10 +66,35 @@ const deleteUser = async (userId, next) => {
     }
 };
 
+// Update user in database
+const updateUser = async (user, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `UPDATE user SET username=?, email=?, password=?, description=?, role=? WHERE id=?`,
+            [
+                user.username,
+                user.email,
+                user.password,
+                user.description,
+                user.role,
+                user.id,
+            ]
+        );
+
+        console.log('model updated user', rows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        console.error('error updating user', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Export all functions
 module.exports = {
     getAllUsers,
     getUser,
     insertUser,
     deleteUser,
+    updateUser,
 };
