@@ -1,6 +1,11 @@
 'use strict';
 
-const { getAllUsers, getUser, insertUser } = require('../models/userModel');
+const {
+    getAllUsers,
+    getUser,
+    insertUser,
+    deleteUser,
+} = require('../models/userModel');
 
 // Get all users from the database and send them in a JSON formatted response.
 const user_get_all = async (req, res, next) => {
@@ -24,9 +29,16 @@ const user_post = async (req, res, next) => {
     res.json(user);
 };
 
+// Get user Id from route parameter and send it to deleteUser
+const delete_user = async (req, res, next) => {
+    const deleted = await deleteUser(req.params.userId, next);
+    res.json({ message: `User deleted: ${deleted}` });
+};
+
 // Export functions
 module.exports = {
     user_get_all,
     user_get,
     user_post,
+    delete_user,
 };
