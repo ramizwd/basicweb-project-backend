@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const users = require('./routes/userRoute');
+const { httpError } = require('./utils/errors');
 const app = express();
 const port = 3000;
 
@@ -14,7 +15,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/user', users); // User route
+// User route
+app.use('/user', users);
+
+// endpoint not found - error handling
+app.use((req, res, next) => {
+    const err = httpError('Not found', 400);
+    next(err);
+});
 
 // Error handler. If there is no status error message, send internal server error.
 app.use((err, req, res, next) => {
