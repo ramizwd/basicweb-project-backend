@@ -382,3 +382,8 @@ $RECYCLE.BIN/
 
 # Ignore REST client file
 request.rest
+
+# ignore content of uploads folder
+uploads/*
+# except one file to keep in version control
+!uploads/.gitkeep
