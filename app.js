@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/user', users);
 app.use('/post', posts);
 
-// endpoint not found - error handling
+// route not found - error handling
 app.use((req, res, next) => {
     const err = httpError('Not found', 400);
     next(err);
@@ -32,5 +32,5 @@ app.use((err, req, res, next) => {
     res.status(status).send(err.message || 'internal error');
 });
 
-// Constantly list to port 3000
+// Constantly listen to port 3000
 app.listen(port, () => console.log(`Listening on port ${port}!`));

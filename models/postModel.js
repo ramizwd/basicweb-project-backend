@@ -48,10 +48,27 @@ const insertPost = async (post, next) => {
             ]
         );
 
-        console.log('model insert new post', rows);
+        console.log('Model insert new post', rows);
         return rows.insertId;
     } catch (e) {
         console.error('error', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
+// Delete post from database
+const deletePost = async (postId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `DELETE FROM prj_post WHERE post_id = ?`,
+            [postId]
+        );
+
+        console.log('Post deleted', rows);
+        return rows.affectedRows === 1; // return true if affected rows equal 1
+    } catch (e) {
+        console.log('Model delete post');
         const err = httpError('SQL error', 500);
         next(err);
     }
@@ -62,4 +79,5 @@ module.exports = {
     getAllPosts,
     getPost,
     insertPost,
+    deletePost,
 };
