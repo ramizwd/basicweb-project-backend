@@ -9,7 +9,7 @@ const promisePool = pool.promise();
 // to display them to the client
 const getAllPosts = async (next) => {
     try {
-        const [rows] = await promisePool.query('SELECT * FROM user_post');
+        const [rows] = await promisePool.query('SELECT * FROM pjr_post');
         return rows;
     } catch (e) {
         console.error('error', e.message);
@@ -22,7 +22,7 @@ const getAllPosts = async (next) => {
 const getPost = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `SELECT * FROM user_post WHERE id = ?`,
+            `SELECT * FROM pjr_post WHERE post_id = ?`,
             [postId]
         );
         console.log('Get post by id', rows);
@@ -34,8 +34,32 @@ const getPost = async (postId, next) => {
     }
 };
 
+// Insert post to database
+const insertPost = async (post, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `INSERT INTO pjr_post (date, title, filename, description, poster) VALUES (?,?,?,?,?)`,
+            [
+                post.date,
+                post.title,
+                post.filename,
+                post.description,
+                post.poster,
+            ]
+        );
+
+        console.log('model insert new post', rows);
+        return rows.insertId;
+    } catch (e) {
+        console.error('error', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Export functions
 module.exports = {
     getAllPosts,
     getPost,
+    insertPost,
 };
