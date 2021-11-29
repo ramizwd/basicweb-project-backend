@@ -23,9 +23,7 @@ router
 
 router
     .route('/:userId')
-    // Get user by id
-    .get(user_get)
-    // Delete user by id
-    .delete(delete_user);
+    .get(user_get) // Get user by id
+    .delete(delete_user); // Delete user by id
 
 module.exports = router;

@@ -1,6 +1,11 @@
 'use strict';
 
-const { getAllPosts, getPost, insertPost } = require('../models/postModel');
+const {
+    getAllPosts,
+    getPost,
+    insertPost,
+    deletePost,
+} = require('../models/postModel');
 const { httpError } = require('../utils/errors');
 
 // Return a JSON array of the Posts if there is any otherwise send an error message
@@ -41,9 +46,16 @@ const post_insert = async (req, res, next) => {
     res.json(post);
 };
 
+// Delete post from DB
+const post_delete = async (req, res, next) => {
+    const deleted = await deletePost(req.params.postId, next);
+    res.json({ message: `Post deleted: ${deleted}` });
+};
+
 // Export functions
 module.exports = {
     post_get_all,
     post_get,
     post_insert,
+    post_delete,
 };
