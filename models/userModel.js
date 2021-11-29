@@ -8,7 +8,7 @@ const promisePool = pool.promise(); // Promise wrapped instance of the created p
 const getAllUsers = async (next) => {
     try {
         // Query database
-        const [rows] = await promisePool.query(`SELECT * FROM user`);
+        const [rows] = await promisePool.query(`SELECT * FROM pjr_user`);
         return rows;
     } catch (e) {
         console.error('error', e.message); // Catch and log any errors.
@@ -21,7 +21,7 @@ const getAllUsers = async (next) => {
 const getUser = async (userId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `SELECT * FROM user WHERE id = ?`,
+            `SELECT * FROM pjr_user WHERE user_id = ?`,
             [userId]
         );
         return rows;
@@ -36,7 +36,7 @@ const getUser = async (userId, next) => {
 const insertUser = async (user, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `INSERT INTO user (username, email, password) VALUES (?,?,?)`,
+            `INSERT INTO pjr_user (username, email, password) VALUES (?,?,?)`,
             [user.username, user.email, user.password]
         );
 
@@ -53,7 +53,7 @@ const insertUser = async (user, next) => {
 const deleteUser = async (userId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `DELETE FROM user WHERE id = ?`,
+            `DELETE FROM pjr_user WHERE user_id = ?`,
             [userId]
         );
 
@@ -70,7 +70,7 @@ const deleteUser = async (userId, next) => {
 const updateUser = async (user, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `UPDATE user SET username=?, email=?, password=?, description=?, role=? WHERE id=?`,
+            `UPDATE pjr_user SET username=?, email=?, password=?, description=?, role=? WHERE user_id=?`,
             [
                 user.username,
                 user.email,
