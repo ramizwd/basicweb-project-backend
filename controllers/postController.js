@@ -1,6 +1,6 @@
 'use strict';
 
-const { getAllPosts, getPost } = require('../models/postModel');
+const { getAllPosts, getPost, insertPost } = require('../models/postModel');
 const { httpError } = require('../utils/errors');
 
 // Return a JSON array of the Posts if there is any otherwise send an error message
@@ -33,8 +33,17 @@ const post_get = async (req, res, next) => {
     next(err);
 };
 
+// Insert new post to DB.
+const post_insert = async (req, res, next) => {
+    console.log('post added', req.body, req.user);
+    const post = req.body;
+    post.message = `post added with ID: ${await insertPost(post, next)}`;
+    res.json(post);
+};
+
 // Export functions
 module.exports = {
     post_get_all,
     post_get,
+    post_insert,
 };

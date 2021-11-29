@@ -1,26 +1,37 @@
-CREATE TABLE `user` (
-  `id` int PRIMARY KEY NOT NULL,
-  `username` varchar(255),
-  `email` varchar(255),
-  `password` varchar(255),
+CREATE TABLE `pjr_user` (
+  `user_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) NOT NULL,
+  `profile_picture` text,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `description` text,
-  `role` int(1) NOT NULL DEFAULT '1'
+  `role` int(1) NOT NULL DEFAULT "1"
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `user_post` (
-  `id` int PRIMARY KEY NOT NULL,
-  `date` date,
-  `title` text(100),
+CREATE TABLE `pjr_post` (
+  `post_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `title` text(100) NOT NULL,
   `filename` text,
-  `text` text,
-  `vote` int,
-  `user_id` int
+  `description` text,
+  `poster` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `comments` (
-  `id` int PRIMARY KEY NOT NULL,
-  `comment` text,
-  `vote` int,
-  `user_post_id` int,
-  `user_id` int
+CREATE TABLE `pjr_comments` (
+  `comments_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `comment` text NOT NULL,
+  `user_post_id` int NOT NULL,
+  `user_id` int NOT NULL
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `pjr_post_vote` (
+  `user_id` int NOT NULL,
+  `vote_count` int NOT NULL,
+  `user_post_id` int NOT NULL
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `pjr_comments_vote` (
+  `user_id` int NOT NULL,
+  `vote_count` int NOT NULL,
+  `comments_id` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
