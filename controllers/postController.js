@@ -1,5 +1,6 @@
 'use strict';
 
+const { validationResult } = require('express-validator');
 const {
     getAllPosts,
     getPost,
@@ -41,7 +42,27 @@ const post_get = async (req, res, next) => {
 // Insert new post to DB.
 const post_insert = async (req, res, next) => {
     console.log('post added', req.body, req.user);
+    console.log('post added', req.file);
+
     const post = req.body;
+    post.filename = req.file.filename;
+
+    // Check file, if not found send error message and code.
+    if (!req.file) {
+        const err = httpError('File not found', 400);
+        next(err);
+        return;
+    }
+
+    // Get the validation errors from the request and return it as an array
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.error('Post validation', errors.array());
+        const err = httpError('Data not valid', 400);
+        next(err);
+        return;
+    }
+
     post.message = `post added with ID: ${await insertPost(post, next)}`;
     res.json(post);
 };
