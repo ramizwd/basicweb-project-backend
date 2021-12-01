@@ -20,18 +20,33 @@ CREATE TABLE `pjr_post` (
 CREATE TABLE `pjr_comments` (
   `comments_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `comment` text NOT NULL,
-  `user_post_id` int NOT NULL,
+  `post_id` int NOT NULL,
   `user_id` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `pjr_post_vote` (
+CREATE TABLE `pjr_vote` (
   `user_id` int NOT NULL,
-  `vote_count` int NOT NULL,
-  `user_post_id` int NOT NULL
+  `vote` int NOT NULL,
+  `vote_type` text NOT NULL,
+  `post_id` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `pjr_comments_vote` (
   `user_id` int NOT NULL,
-  `vote_count` int NOT NULL,
+  `vote` int NOT NULL,
   `comments_id` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_post` (`poster`);
+
+ALTER TABLE `pjr_post` ADD FOREIGN KEY (`post_id`) REFERENCES `pjr_comments` (`post_id`);
+
+ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_comments` (`user_id`);
+
+ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_vote` (`user_id`);
+
+ALTER TABLE `pjr_post` ADD FOREIGN KEY (`post_id`) REFERENCES `pjr_vote` (`post_id`);
+
+ALTER TABLE `pjr_comments` ADD FOREIGN KEY (`comments_id`) REFERENCES `pjr_comments_vote` (`comments_id`);
+
+ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_comments_vote` (`user_id`);
