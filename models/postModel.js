@@ -65,7 +65,7 @@ const insertPost = async (post, next) => {
 const deletePost = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `DELETE FROM prj_post WHERE post_id = ?`,
+            `DELETE FROM pjr_post WHERE post_id = ?`,
             [postId]
         );
 
