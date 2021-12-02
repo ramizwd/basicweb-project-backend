@@ -90,6 +90,19 @@ const updateUser = async (user, next) => {
     }
 };
 
+const getUserLogin = async (params) => {
+    try {
+        console.log(params);
+        const [rows] = await promisePool.execute(
+            'SELECT * FROM pjr_user WHERE email=?;',
+            params
+        );
+        return rows;
+    } catch (e) {
+        console.log('error', e.message);
+    }
+};
+
 // Export all functions
 module.exports = {
     getAllUsers,
@@ -97,4 +110,5 @@ module.exports = {
     insertUser,
     deleteUser,
     updateUser,
+    getUserLogin,
 };
