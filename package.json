@@ -1,7 +1,7 @@
 {
-    "name": "data-validation",
+    "name": "authentication",
     "version": "1.0.0",
-    "description": "data-validation for user and post",
+    "description": "User authentication with JWT",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +21,11 @@
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "express-validator": "^6.13.0",
+        "jsonwebtoken": "^8.5.1",
         "multer": "^1.4.3",
-        "mysql2": "^2.3.3"
+        "mysql2": "^2.3.3",
+        "passport": "^0.5.0",
+        "passport-jwt": "^4.0.0",
+        "passport-local": "^1.0.0"
     }
 }
