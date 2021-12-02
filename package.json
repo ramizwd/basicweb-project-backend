@@ -1,7 +1,7 @@
 {
-    "name": "basicweb-project-backend",
+    "name": "data-validation",
     "version": "1.0.0",
-    "description": "adding post routes",
+    "description": "data-validation for user and post",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
