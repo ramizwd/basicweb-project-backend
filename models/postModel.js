@@ -11,7 +11,7 @@ const getAllPosts = async (next) => {
     try {
         const [rows] = await promisePool.query(
             'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
-                'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id'
+                'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id ORDER BY post_id DESC'
         );
         return rows;
     } catch (e) {
