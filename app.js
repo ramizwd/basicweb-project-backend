@@ -1,24 +1,29 @@
 'strict use';
 
+// required files
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
+const authRoute = require('./routes/authRoute');
 const { httpError } = require('./utils/errors');
+const passport = require('./utils/pass');
 const app = express();
 const port = 3000;
 
 // allowing request from other origins/URLs
 app.use(cors());
+app.use(passport.initialize());
 
 // Middleware for PUT AND POST request for recognizing JSON Objects and strings.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// User and Post routes
-app.use('/user', users);
-app.use('/post', posts);
+// User and Post routes with passport auth middleware
+app.use('/auth', authRoute);
+app.use('/user', passport.authenticate('jwt', { session: false }), users);
+app.use('/post', passport.authenticate('jwt', { session: false }), posts);
 
 // route not found - error handling
 app.use((req, res, next) => {
