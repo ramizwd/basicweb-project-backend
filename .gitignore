@@ -385,5 +385,8 @@ request.rest
 
 # ignore content of uploads folder
 uploads/*
+ # ignore content of thumbnails folder
+thumbnails/*
 # except one file to keep in version control
 !uploads/.gitkeep
+!thumbnails/.gitkeep
