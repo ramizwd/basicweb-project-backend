@@ -35,7 +35,7 @@ const post_get = async (req, res, next) => {
         return;
     }
 
-    const err = httpError('cat not found', 404);
+    const err = httpError('post not found', 404);
     next(err);
 };
 
