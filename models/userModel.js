@@ -24,7 +24,7 @@ const getUser = async (userId, next) => {
             `SELECT * FROM pjr_user WHERE user_id = ?`,
             [userId]
         );
-        return rows;
+        return rows[0];
     } catch (e) {
         console.error('error', e.message);
         const err = httpError('SQL error', 500);
@@ -90,6 +90,20 @@ const updateUser = async (user, next) => {
     }
 };
 
+// Return user with the specified email from the DB or catch any errors
+const getUserLogin = async (params) => {
+    try {
+        console.log(params);
+        const [rows] = await promisePool.execute(
+            'SELECT * FROM pjr_user WHERE email=?;',
+            params
+        );
+        return rows;
+    } catch (e) {
+        console.log('error', e.message);
+    }
+};
+
 // Export all functions
 module.exports = {
     getAllUsers,
@@ -97,4 +111,5 @@ module.exports = {
     insertUser,
     deleteUser,
     updateUser,
+    getUserLogin,
 };

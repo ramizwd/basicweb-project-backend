@@ -1,5 +1,6 @@
 'use strict';
 
+const { validationResult } = require('express-validator');
 const {
     getAllUsers,
     getUser,
@@ -7,6 +8,7 @@ const {
     deleteUser,
     updateUser,
 } = require('../models/userModel');
+const { httpError } = require('../utils/errors');
 
 // Get all users from the database and send them in a JSON formatted response.
 const user_get_all = async (req, res, next) => {
@@ -26,6 +28,15 @@ const user_get = async (req, res, next) => {
 const user_post = async (req, res, next) => {
     console.log('added user data', req.body);
     const user = req.body;
+    const errors = validationResult(req);
+
+    // Get the validation errors from the request and return it as an array
+    if (!errors.isEmpty()) {
+        console.error('Post validation', errors.array());
+        const err = httpError('Data not valid', 400);
+        next(err);
+        return;
+    }
     user.message = `user added with id: ${await insertUser(user, next)}`;
     res.json(user);
 };
@@ -42,6 +53,15 @@ const user_update = async (req, res, next) => {
     res.json({ message: `User Updated: ${updated}` });
 };
 
+// Check token
+const checkToken = (req, res, next) => {
+    if (!req.user) {
+        next(new Error('token not valid'));
+    } else {
+        res.json({ user: req.user });
+    }
+};
+
 // Export functions
 module.exports = {
     user_get_all,
@@ -49,4 +69,5 @@ module.exports = {
     user_post,
     delete_user,
     user_update,
+    checkToken,
 };
