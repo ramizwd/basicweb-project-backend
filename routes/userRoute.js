@@ -1,8 +1,7 @@
 'use strict';
 
 const express = require('express');
-const multer = require('multer');
-const upload = multer({ dest: './uploads/' });
+const { body } = require('express-validator');
 const router = express.Router();
 const {
     user_get_all,
@@ -10,22 +9,28 @@ const {
     user_post,
     delete_user,
     user_update,
+    checkToken,
 } = require('../controllers/userController');
+
+router.get('/token', checkToken);
 
 router
     .route('/')
     // Get request to user_get_all using express routing
     .get(user_get_all)
-    // Using multer for handling 'multipart/form-data' file uploads and sending Post req to user_post.
-    .post(upload.single('user'), user_post)
+    // Multer for handling 'multipart/form-data' file uploads, validate data, then send Post req to user_post.
+    .post(
+        body('username').isLength({ min: 4 }),
+        body('email').isEmail(),
+        body('password').matches('(?=.*[A-Z]).{8,}'),
+        user_post
+    )
     // Update user http request method
     .put(user_update);
 
 router
     .route('/:userId')
-    // Get user by id
-    .get(user_get)
-    // Delete user by id
-    .delete(delete_user);
+    .get(user_get) // Get user by id
+    .delete(delete_user); // Delete user by id
 
 module.exports = router;
