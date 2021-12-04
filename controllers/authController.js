@@ -28,7 +28,14 @@ const login = (req, res, next) => {
     })(req, res, next);
 };
 
+// logout
+const logout = (req, res) => {
+    req.logout();
+    res.json({ message: 'logout' });
+};
+
 // Export the function
 module.exports = {
     login,
+    logout,
 };
