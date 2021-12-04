@@ -9,7 +9,10 @@ const {
     user_post,
     delete_user,
     user_update,
+    checkToken,
 } = require('../controllers/userController');
+
+router.get('/token', checkToken);
 
 router
     .route('/')

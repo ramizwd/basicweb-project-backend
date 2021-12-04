@@ -53,6 +53,15 @@ const user_update = async (req, res, next) => {
     res.json({ message: `User Updated: ${updated}` });
 };
 
+// Check token
+const checkToken = (req, res, next) => {
+    if (!req.user) {
+        next(new Error('token not valid'));
+    } else {
+        res.json({ user: req.user });
+    }
+};
+
 // Export functions
 module.exports = {
     user_get_all,
@@ -60,4 +69,5 @@ module.exports = {
     user_post,
     delete_user,
     user_update,
+    checkToken,
 };
