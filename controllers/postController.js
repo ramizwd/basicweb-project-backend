@@ -45,6 +45,7 @@ const post_insert = async (req, res, next) => {
     console.log('post added', req.file);
 
     const post = req.body;
+    const user = req.user;
     post.filename = req.file.filename;
 
     // Check file, if not found send error message and code.
@@ -63,7 +64,7 @@ const post_insert = async (req, res, next) => {
         return;
     }
 
-    post.message = `post added with ID: ${await insertPost(post, next)}`;
+    post.message = `post added with ID: ${await insertPost(post, user, next)}`;
     res.json(post);
 };
 

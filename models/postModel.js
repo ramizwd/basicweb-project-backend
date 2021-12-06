@@ -10,8 +10,7 @@ const promisePool = pool.promise();
 const getAllPosts = async (next) => {
     try {
         const [rows] = await promisePool.query(
-            'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
-                'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id ORDER BY post_id DESC'
+            'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS postername, pjr_user.profile_picture AS userpfp, COUNT(case when vote_count = 1 then 1 end) as Upvotes, COUNT(case when vote_count = 0 then 1 end) as Downvotes, (COUNT(case when vote_count=1 then 1 end)-COUNT(case when vote_count = 0 then 1 end) ) as Votes FROM pjr_post INNER JOIN pjr_user ON poster = pjr_user.user_id INNER JOIN pjr_post_vote on pjr_post.post_id = pjr_post_vote.user_post_id GROUP BY post_id ORDER BY post_id DESC'
         );
         return rows;
     } catch (e) {
@@ -39,7 +38,7 @@ const getPost = async (postId, next) => {
 };
 
 // Insert post to database
-const insertPost = async (post, next) => {
+const insertPost = async (post, user, next) => {
     try {
         const [rows] = await promisePool.execute(
             `INSERT INTO pjr_post (date, title, filename, description, poster) VALUES (?,?,?,?,?)`,
@@ -51,8 +50,13 @@ const insertPost = async (post, next) => {
                 post.poster,
             ]
         );
+        await promisePool.execute(
+            'INSERT INTO pjr_post_vote(user_id, vote_count) VALUES (?,?)',
+            [user.user_id, null]
+        );
 
         console.log('Model insert new post', rows);
+
         return rows.insertId;
     } catch (e) {
         console.error('error', e.message);
