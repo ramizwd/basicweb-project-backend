@@ -1,11 +1,11 @@
-'strict use';
+'use strict';
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
-const { httpError } = require('./utils/errors');
+const {httpError} = require('./utils/errors');
 const app = express();
 const port = 3000;
 
@@ -14,8 +14,11 @@ app.use(cors());
 
 // Middleware for PUT AND POST request for recognizing JSON Objects and strings.
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
+//the route to upload and thumbnails
+app.use(express.static('upload'));
+app.use('/thumbnails', express.static('thumbnails'));
 // User and Post routes
 app.use('/user', users);
 app.use('/post', posts);

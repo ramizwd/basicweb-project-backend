@@ -1,13 +1,14 @@
 'use strict';
 
-const { validationResult } = require('express-validator');
+const {validationResult} = require('express-validator');
 const {
     getAllPosts,
     getPost,
     insertPost,
     deletePost,
 } = require('../models/postModel');
-const { httpError } = require('../utils/errors');
+const {httpError} = require('../utils/errors');
+const {makeThumbnail} = require('../utils/resize');
 
 // Return a JSON array of the Posts if there is any otherwise send an error message
 // with status code to the client
@@ -62,6 +63,8 @@ const post_insert = async (req, res, next) => {
         next(err);
         return;
     }
+    //await the thumnails info
+    await makeThumbnail(req.file.path, req.file.filename);
 
     post.message = `post added with ID: ${await insertPost(post, next)}`;
     res.json(post);
@@ -70,7 +73,7 @@ const post_insert = async (req, res, next) => {
 // Delete post from DB
 const post_delete = async (req, res, next) => {
     const deleted = await deletePost(req.params.postId, next);
-    res.json({ message: `Post deleted: ${deleted}` });
+    res.json({message: `Post deleted: ${deleted}`});
 };
 
 // Export functions
