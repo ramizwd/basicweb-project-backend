@@ -7,6 +7,7 @@ const cors = require('cors');
 const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
 const authRoute = require('./routes/authRoute');
+const votes = require('./routes/voteRoute');
 const { httpError } = require('./utils/errors');
 const passport = require('./utils/pass');
 const app = express();
@@ -24,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
+
+app.use('/vote', votes);
 
 // route not found - error handling
 app.use((req, res, next) => {
