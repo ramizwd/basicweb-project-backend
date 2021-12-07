@@ -8,7 +8,7 @@ const promisePool = pool.promise(); // Promise wrapped instance of the created p
 const getAllUsers = async (next) => {
     try {
         // Query database
-        const [rows] = await promisePool.query(`SELECT * FROM pjr_user`);
+        const [rows] = await promisePool.execute(`SELECT * FROM pjr_user`);
         return rows;
     } catch (e) {
         console.error('error', e.message); // Catch and log any errors.

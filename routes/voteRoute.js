@@ -2,9 +2,10 @@
 
 const express = require('express');
 
-const { post_vote } = require('../controllers/voteController');
+const { post_vote, update_vote } = require('../controllers/voteController');
 const router = express.Router();
 
-router.route('/:postId').post(post_vote);
+// Vote routes
+router.route('/:postId').post(post_vote).put(update_vote);
 
 module.exports = router;

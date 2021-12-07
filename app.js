@@ -21,11 +21,10 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// User and Post routes with passport auth middleware
+// User, Post, and Vote routes with passport auth middleware
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
-
 app.use('/vote', votes);
 
 // route not found - error handling
