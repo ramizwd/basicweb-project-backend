@@ -4,6 +4,21 @@ const pool = require('../database/db');
 const { httpError } = require('../utils/errors');
 const promisePool = pool.promise();
 
+// Get vote and voter info
+const getVote = async (userId, postId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'SELECT user_id, vote_count, user_post_id FROM pjr_post_vote WHERE user_id = ? AND user_post_id = ?',
+            [userId, postId]
+        );
+        return rows[0];
+    } catch (e) {
+        console.error('error', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Get user id, vote type, and post id, then insert a new vote to the post
 const voteInsert = async (vote, user, postId, next) => {
     try {
@@ -20,11 +35,11 @@ const voteInsert = async (vote, user, postId, next) => {
 };
 
 // update vote if user want to change vote type
-const voteUpdate = async (body, postId, next) => {
+const voteUpdate = async (vote, postId, next) => {
     try {
         const [rows] = await promisePool.pool.execute(
             'UPDATE pjr_post_vote SET vote_count = ? WHERE user_id = ? AND user_post_id = ?',
-            [body.vote_count, body.user_id, postId]
+            [vote.vote_count, vote.user_id, postId]
         );
         console.log('vote updated');
         return rows.affectedRows === 1;
@@ -39,4 +54,5 @@ const voteUpdate = async (body, postId, next) => {
 module.exports = {
     voteInsert,
     voteUpdate,
+    getVote,
 };

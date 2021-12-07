@@ -1,8 +1,13 @@
 'use strict';
 
 const {} = require('express');
-const { voteInsert, voteUpdate } = require('../models/voteModel');
+const { voteInsert, voteUpdate, getVote } = require('../models/voteModel');
 
+const get_vote = async (req, res, next) => {
+    // const user = req.body;
+    const vote = await getVote(req.params.userId, req.params.postId, next);
+    res.json(vote);
+};
 // Send user, vote, and post id info to voteInsert function then get a JSON response from it
 const post_vote = async (req, res, next) => {
     const vote = req.body;
@@ -19,7 +24,8 @@ const post_vote = async (req, res, next) => {
 
 // Update vote
 const update_vote = async (req, res, next) => {
-    const vote = await voteUpdate(req.body, req.params.postId, next);
+    const voteBody = req.body;
+    const vote = await voteUpdate(voteBody, req.params.postId, next);
     res.json({ message: `Vote updated: ${vote}` });
     console.log('updated vote', body, req.params.postId);
 };
@@ -28,4 +34,5 @@ const update_vote = async (req, res, next) => {
 module.exports = {
     post_vote,
     update_vote,
+    get_vote,
 };
