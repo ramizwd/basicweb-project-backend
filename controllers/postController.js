@@ -47,6 +47,8 @@ const post_insert = async (req, res, next) => {
 
     const post = req.body;
     post.filename = req.file.filename;
+    //to recognize if file is img or type
+    post.type = req.file.mimetype;
 
     // Check file, if not found send error message and code.
     if (!req.file) {
@@ -63,8 +65,6 @@ const post_insert = async (req, res, next) => {
         next(err);
         return;
     }
-    //await the thumnails info
-    await makeThumbnail(req.file.path, req.file.filename);
 
     post.message = `post added with ID: ${await insertPost(post, next)}`;
     res.json(post);
