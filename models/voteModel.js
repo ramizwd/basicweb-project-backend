@@ -20,7 +20,7 @@ const getVote = async (userId, postId, next) => {
 };
 
 // Get user id, vote type, and post id, then insert a new vote to the post
-const voteInsert = async (vote, user, postId, next) => {
+const voteInsert = async (user, vote, postId, next) => {
     try {
         const [rows] = await promisePool.execute(
             'INSERT INTO pjr_post_vote(user_id, vote_count, user_post_id) VALUES (?,?,?)',
@@ -50,9 +50,26 @@ const voteUpdate = async (vote, postId, next) => {
     }
 };
 
+// Delete user's voted vote
+const deleteVote = async (bodyInfo, postId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'DELETE FROM `pjr_post_vote` WHERE user_id = ? AND vote_count = ? AND user_post_id = ?',
+            [bodyInfo.user_id, bodyInfo.vote_count, postId]
+        );
+        console.log('vote deleted');
+        return rows.affectedRows === 1;
+    } catch (e) {
+        console.error('error updating vote', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Export functions
 module.exports = {
     voteInsert,
     voteUpdate,
     getVote,
+    deleteVote,
 };
