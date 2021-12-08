@@ -6,6 +6,7 @@ const {
     getPost,
     insertPost,
     deletePost,
+    getUserPosts,
 } = require('../models/postModel');
 const { httpError } = require('../utils/errors');
 
@@ -33,6 +34,13 @@ const post_get = async (req, res, next) => {
 
     const err = httpError('post not found', 404);
     next(err);
+};
+
+// Get parameter and send it to getUserPosts
+const get_user_posts = async (req, res, next) => {
+    const userPosts = await getUserPosts(req.params.userId, next);
+    console.log('get all user posts', userPosts);
+    res.json(userPosts);
 };
 
 // Insert new post to DB.
@@ -76,4 +84,5 @@ module.exports = {
     post_get,
     post_insert,
     post_delete,
+    get_user_posts,
 };
