@@ -58,9 +58,11 @@ const post_insert = async (req, res, next) => {
     //to recognize if file is img or type
     post.type = req.file.mimetype;
     //to make thumbnail
-    await makeThumbnail(req.file.path, req.file.filename);
+    if(post.type === 'image/png' || post.type ===
+    'image/jpg' || post.type === 'image/webp') {
+        await makeThumbnail(req.file.path, req.file.filename);
 
-
+    }
     // Get the validation errors from the request and return it as an array
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
