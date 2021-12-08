@@ -7,6 +7,7 @@ const {
     insertUser,
     deleteUser,
     updateUser,
+    updateUserProfile,
 } = require('../models/userModel');
 const { httpError } = require('../utils/errors');
 
@@ -53,6 +54,12 @@ const user_update = async (req, res, next) => {
     res.json({ message: `User Updated: ${updated}` });
 };
 
+// Get user and send their info to updateUserProfile
+const user_update_profile = async (req, res, next) => {
+    const updated = await updateUserProfile(req.body, next);
+    res.json({ message: `User profile Updated: ${updated}` });
+};
+
 // Check token
 const checkToken = (req, res, next) => {
     if (!req.user) {
@@ -70,4 +77,5 @@ module.exports = {
     delete_user,
     user_update,
     checkToken,
+    user_update_profile,
 };
