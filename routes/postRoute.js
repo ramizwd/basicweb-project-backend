@@ -22,6 +22,7 @@ const {
     post_get,
     post_insert,
     post_delete,
+    get_user_posts,
 } = require('../controllers/postController');
 const router = express.Router();
 
@@ -40,5 +41,8 @@ router
     .route('/:postId')
     .get(post_get) // Get post by id request
     .delete(post_delete); // Delete request
+
+// Route for getting user's posts
+router.route('/user/:userId').get(get_user_posts);
 
 module.exports = router;
