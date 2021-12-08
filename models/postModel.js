@@ -10,7 +10,7 @@ const promisePool = pool.promise();
 const getAllPosts = async (next) => {
     try {
         const [rows] = await promisePool.query(
-        'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
+        'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS ' +
         'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id ORDER BY post_id DESC',
         );
         return rows;
@@ -25,7 +25,7 @@ const getAllPosts = async (next) => {
 const getPost = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-        'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
+        'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS ' +
         'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id WHERE post_id = ?',
         [postId],
         );
@@ -42,7 +42,7 @@ const getPost = async (postId, next) => {
 const insertPost = async (post, next) => {
     try {
         const [rows] = await promisePool.execute(
-        `INSERT INTO pjr_post (date, title, filename, description, poster,Type) VALUES (?,?,?,?,?,?)`,
+        `INSERT INTO pjr_post (date, title, filename, description, poster,file_type) VALUES (?,?,?,?,?,?)`,
         [
             post.date,
             post.title,

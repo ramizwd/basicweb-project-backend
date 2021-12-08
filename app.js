@@ -16,8 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//the route to upload and thumbnails
-app.use(express.static('upload'));
+//the route to uploads and thumbnails
+app.use(express.static('uploads'));
 app.use('/thumbnails', express.static('thumbnails'));
 // User and Post routes
 app.use('/user', users);

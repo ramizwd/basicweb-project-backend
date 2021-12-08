@@ -10,6 +10,7 @@ const {
 const {httpError} = require('../utils/errors');
 const {makeThumbnail} = require('../utils/resize');
 
+
 // Return a JSON array of the Posts if there is any otherwise send an error message
 // with status code to the client
 const post_get_all = async (req, res, next) => {
@@ -45,17 +46,20 @@ const post_insert = async (req, res, next) => {
     console.log('post added', req.body, req.user);
     console.log('post added', req.file);
 
-    const post = req.body;
-    post.filename = req.file.filename;
-    //to recognize if file is img or type
-    post.type = req.file.mimetype;
-
     // Check file, if not found send error message and code.
     if (!req.file) {
         const err = httpError('File not found', 400);
         next(err);
         return;
     }
+
+    const post = req.body;
+    post.filename = req.file.filename;
+    //to recognize if file is img or type
+    post.type = req.file.mimetype;
+    //to make thumbnail
+    await makeThumbnail(req.file.path, req.file.filename);
+
 
     // Get the validation errors from the request and return it as an array
     const errors = validationResult(req);
@@ -67,7 +71,7 @@ const post_insert = async (req, res, next) => {
     }
 
     post.message = `post added with ID: ${await insertPost(post, next)}`;
-    res.json(post);
+        res.json(post);
 };
 
 // Delete post from DB
