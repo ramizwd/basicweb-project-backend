@@ -24,6 +24,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
+//the route to uploads and thumbnails
+app.use(express.static('uploads'));
+app.use('/thumbnails', express.static('thumbnails'));
+
 
 // route not found - error handling
 app.use((req, res, next) => {

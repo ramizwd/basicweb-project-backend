@@ -1,7 +1,7 @@
 'use strict';
 
 const pool = require('../database/db');
-const { httpError } = require('../utils/errors');
+const {httpError} = require('../utils/errors');
 const promisePool = pool.promise();
 
 // Try connecting to DB then execute the SQL query that selects all user_post rows and return them.
@@ -10,8 +10,8 @@ const promisePool = pool.promise();
 const getAllPosts = async (next) => {
     try {
         const [rows] = await promisePool.query(
-            'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
-                'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id ORDER BY post_id DESC'
+        'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS ' +
+        'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id ORDER BY post_id DESC',
         );
         return rows;
     } catch (e) {
@@ -25,9 +25,9 @@ const getAllPosts = async (next) => {
 const getPost = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            'SELECT post_id, poster, date, title, filename, pjr_post.description AS description, pjr_user.username AS ' +
-                'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id WHERE post_id = ?',
-            [postId]
+        'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS ' +
+        'postername, pjr_user.profile_picture AS userpfp FROM pjr_post INNER JOIN pjr_user ON poster = user_id WHERE post_id = ?',
+        [postId],
         );
         console.log('Get post by id', rows);
         return rows[0];
@@ -42,14 +42,15 @@ const getPost = async (postId, next) => {
 const insertPost = async (post, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `INSERT INTO pjr_post (date, title, filename, description, poster) VALUES (?,?,?,?,?)`,
-            [
-                post.date,
-                post.title,
-                post.filename,
-                post.description,
-                post.poster,
-            ]
+        `INSERT INTO pjr_post (date, title, filename, description, poster,file_type) VALUES (?,?,?,?,?,?)`,
+        [
+            post.date,
+            post.title,
+            post.filename,
+            post.description,
+            post.poster,
+            post.type,
+        ],
         );
 
         console.log('Model insert new post', rows);
@@ -65,8 +66,8 @@ const insertPost = async (post, next) => {
 const deletePost = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `DELETE FROM pjr_post WHERE post_id = ?`,
-            [postId]
+        `DELETE FROM pjr_post WHERE post_id = ?`,
+        [postId],
         );
 
         console.log('Post deleted', rows);

@@ -1,5 +1,5 @@
 {
-    "name": "main",
+    "name": "basicweb-project-backend",
     "version": "1.0.0",
     "description": "Backend main branch",
     "main": "app.js",
@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/ramizwd/basicweb-project.git"
     },
-    "author": "Ramiz W. | Johnkai Cortez",
+    "author": "Ramiz W.| Johnkai C.",
     "license": "GNU-3",
     "bugs": {
         "url": "https://github.com/ramizwd/basicweb-project/issues"
@@ -26,6 +26,7 @@
         "mysql2": "^2.3.3",
         "passport": "^0.5.0",
         "passport-jwt": "^4.0.0",
-        "passport-local": "^1.0.0"
+        "passport-local": "^1.0.0",
+        "sharp": "^0.29.3"
     }
 }
