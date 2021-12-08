@@ -51,6 +51,7 @@ const post_insert = async (req, res, next) => {
     const post = req.body;
     const user = req.user;
     post.filename = req.file.filename;
+    post.poster = req.user.user_id;
 
     // Check file, if not found send error message and code.
     if (!req.file) {
