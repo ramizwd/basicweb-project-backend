@@ -7,6 +7,7 @@ const cors = require('cors');
 const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
 const authRoute = require('./routes/authRoute');
+const votes = require('./routes/voteRoute');
 const { httpError } = require('./utils/errors');
 const passport = require('./utils/pass');
 const app = express();
@@ -20,7 +21,7 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// User and Post routes with passport auth middleware
+// User, Post, and Vote routes with passport auth middleware
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
@@ -28,6 +29,7 @@ app.use('/post', passport.authenticate('jwt', { session: false }), posts);
 app.use(express.static('uploads'));
 app.use('/thumbnails', express.static('thumbnails'));
 
+app.use('/vote', votes);
 
 // route not found - error handling
 app.use((req, res, next) => {
