@@ -390,3 +390,11 @@ thumbnails/*
 # except one file to keep in version control
 !uploads/.gitkeep
 !thumbnails/.gitkeep
+
+# Ignore REST client file
+request.rest
+
+# Ignore TLS certificate and private key
+certrequest.csr
+ssl-cert.pem
+ssl-key.pem
