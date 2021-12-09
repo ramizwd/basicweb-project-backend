@@ -87,14 +87,17 @@ const insertPost = async (post, next) => {
     }
 };
 
-// Delete post from database
-const deletePost = async (postId, next) => {
+// If the user is with moderator role don't check poster else check poster
+// and allow deletion only if poster and post id match
+const deletePost = async (postId, userId, role, next) => {
+    let sql = 'DELETE FROM pjr_post WHERE post_id = ? AND poster = ?';
+    let params = [postId, userId];
+    if (role === 0) {
+        sql = 'DELETE FROM pjr_post WHERE post_id = ?';
+        params = [postId];
+    }
     try {
-        const [rows] = await promisePool.execute(
-            `DELETE FROM pjr_post WHERE post_id = ?`,
-            [postId]
-        );
-
+        const [rows] = await promisePool.execute(sql, params);
         console.log('Post deleted', rows);
         return rows.affectedRows === 1; // return true if affected rows equal 1
     } catch (e) {

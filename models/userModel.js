@@ -49,14 +49,17 @@ const insertUser = async (user, next) => {
     }
 };
 
-// Delete user from database
-const deleteUser = async (userId, next) => {
+// Check role if it's 0 (moderator) use the query that allows any user to be deleted
+// else check user id that's logged in and user's id to be deleted
+const deleteUser = async (userId, user_id, role, next) => {
+    let sql = 'DELETE FROM pjr_user WHERE user_id = ? AND user_id = ?';
+    let params = [userId, user_id];
+    if (role === 0) {
+        sql = 'DELETE FROM pjr_user WHERE user_id = ?';
+        params = [userId];
+    }
     try {
-        const [rows] = await promisePool.execute(
-            `DELETE FROM pjr_user WHERE user_id = ?`,
-            [userId]
-        );
-
+        const [rows] = await promisePool.execute(sql, params);
         console.log('model user deleted', rows);
         return rows.affectedRows === 1;
     } catch (e) {
@@ -66,20 +69,32 @@ const deleteUser = async (userId, next) => {
     }
 };
 
-// Update user in database
-const updateUser = async (user, next) => {
+// Update any user and user role if mode role, else update only user's own info without editing role
+const updateUser = async (user, user_id, role, next) => {
+    let sql =
+        'UPDATE pjr_user SET username=?, email=?, password=?, description=? WHERE user_id=? AND user_id=?';
+    let params = [
+        user.username,
+        user.email,
+        user.password,
+        user.description,
+        user.id,
+        user_id,
+    ];
+    if (role === 0) {
+        sql =
+            'UPDATE pjr_user SET username=?, email=?, password=?, description=?, role=? WHERE user_id=?';
+        params = [
+            user.username,
+            user.email,
+            user.password,
+            user.description,
+            user.role,
+            user.id,
+        ];
+    }
     try {
-        const [rows] = await promisePool.execute(
-            `UPDATE pjr_user SET username=?, email=?, password=?, description=?, role=? WHERE user_id=?`,
-            [
-                user.username,
-                user.email,
-                user.password,
-                user.description,
-                user.role,
-                user.id,
-            ]
-        );
+        const [rows] = await promisePool.execute(sql, params);
 
         console.log('model updated user', rows);
         return rows.affectedRows === 1;
@@ -91,12 +106,16 @@ const updateUser = async (user, next) => {
 };
 
 // Update user profile in database
-const updateUserProfile = async (user, next) => {
+const updateUserProfile = async (user, user_id, role, next) => {
+    let sql =
+        'UPDATE pjr_user SET username=?, description=? WHERE user_id=? AND user_id=?';
+    let params = [user.username, user.description, user.id, user_id];
+    if (role === 0) {
+        sql = 'UPDATE pjr_user SET username=?, description=? WHERE user_id=?';
+        params = [user.username, user.description, user.id];
+    }
     try {
-        const [rows] = await promisePool.execute(
-            `UPDATE pjr_user SET username=?, description=? WHERE user_id=?`,
-            [user.username, user.description, user.id]
-        );
+        const [rows] = await promisePool.execute(sql, params);
 
         console.log('model updated user', rows);
         return rows.affectedRows === 1;
