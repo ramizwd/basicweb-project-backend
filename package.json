@@ -1,7 +1,7 @@
 {
-    "name": "basicweb-project-backend",
+    "name": "authorization",
     "version": "1.0.0",
-    "description": "Backend main branch",
+    "description": "user authorization",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/ramizwd/basicweb-project.git"
     },
-    "author": "Ramiz W.| Johnkai C.",
+    "author": "Ramiz W.",
     "license": "GNU-3",
     "bugs": {
         "url": "https://github.com/ramizwd/basicweb-project/issues"
