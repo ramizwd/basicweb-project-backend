@@ -84,9 +84,15 @@ const post_insert = async (req, res, next) => {
     res.json(post);
 };
 
-// Delete post from DB
+// Get post id from parameter and user info from the request
+// then send them to deletePost and delete them from DB
 const post_delete = async (req, res, next) => {
-    const deleted = await deletePost(req.params.postId, next);
+    const deleted = await deletePost(
+        req.params.postId,
+        req.user.user_id,
+        req.user.role,
+        next
+    );
     res.json({ message: `Post deleted: ${deleted}` });
 };
 

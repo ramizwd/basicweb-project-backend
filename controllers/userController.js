@@ -42,21 +42,36 @@ const user_post = async (req, res, next) => {
     res.json(user);
 };
 
-// Get user Id from route parameter and send it to deleteUser
+// Get user Id from route parameter same with user info and send it to deleteUser
 const delete_user = async (req, res, next) => {
-    const deleted = await deleteUser(req.params.userId, next);
+    const deleted = await deleteUser(
+        req.params.userId,
+        req.user.user_id,
+        req.user.role,
+        next
+    );
     res.json({ message: `User deleted: ${deleted}` });
 };
 
 // Get user and send them to updateUser function
 const user_update = async (req, res, next) => {
-    const updated = await updateUser(req.body, next);
+    const updated = await updateUser(
+        req.body,
+        req.user.user_id,
+        req.user.role,
+        next
+    );
     res.json({ message: `User Updated: ${updated}` });
 };
 
 // Get user and send their info to updateUserProfile
 const user_update_profile = async (req, res, next) => {
-    const updated = await updateUserProfile(req.body, next);
+    const updated = await updateUserProfile(
+        req.body,
+        req.user.user_id,
+        req.user.role,
+        next
+    );
     res.json({ message: `User profile Updated: ${updated}` });
 };
 
