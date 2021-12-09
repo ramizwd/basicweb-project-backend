@@ -10,6 +10,7 @@ const {
     delete_user,
     user_update,
     checkToken,
+    user_update_profile,
 } = require('../controllers/userController');
 
 router.get('/token', checkToken);
@@ -32,5 +33,8 @@ router
     .route('/:userId')
     .get(user_get) // Get user by id
     .delete(delete_user); // Delete user by id
+
+// Edit user profile route
+router.route('/profile').put(user_update_profile);
 
 module.exports = router;

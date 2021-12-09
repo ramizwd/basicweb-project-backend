@@ -8,7 +8,7 @@ const promisePool = pool.promise(); // Promise wrapped instance of the created p
 const getAllUsers = async (next) => {
     try {
         // Query database
-        const [rows] = await promisePool.query(`SELECT * FROM pjr_user`);
+        const [rows] = await promisePool.execute(`SELECT * FROM pjr_user`);
         return rows;
     } catch (e) {
         console.error('error', e.message); // Catch and log any errors.
@@ -90,6 +90,23 @@ const updateUser = async (user, next) => {
     }
 };
 
+// Update user profile in database
+const updateUserProfile = async (user, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `UPDATE pjr_user SET username=?, description=? WHERE user_id=?`,
+            [user.username, user.description, user.id]
+        );
+
+        console.log('model updated user', rows);
+        return rows.affectedRows === 1;
+    } catch (e) {
+        console.error('error updating user', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Return user with the specified email from the DB or catch any errors
 const getUserLogin = async (params) => {
     try {
@@ -112,4 +129,5 @@ module.exports = {
     deleteUser,
     updateUser,
     getUserLogin,
+    updateUserProfile,
 };
