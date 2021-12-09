@@ -1,5 +1,6 @@
 CREATE TABLE `pjr_user` (
   `user_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `date` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   `username` varchar(100) NOT NULL,
   `profile_picture` text,
   `email` varchar(255) NOT NULL,
@@ -10,31 +11,40 @@ CREATE TABLE `pjr_user` (
 
 CREATE TABLE `pjr_post` (
   `post_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
+  `date` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   `title` text(100) NOT NULL,
   `filename` text,
   `description` text,
-  `poster` int NOT NULL
+  `poster` int NOT NULL,
+  `file_type` text
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `pjr_comments` (
   `comments_id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `date` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
   `comment` text NOT NULL,
-  `post_id` int NOT NULL,
+  `user_post_id` int NOT NULL,
   `user_id` int NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `pjr_vote` (
+CREATE TABLE `pjr_post_vote` (
   `user_id` int NOT NULL,
-  `vote` int NOT NULL,
-  `vote_type` text NOT NULL,
-  `post_id` int NOT NULL
+  `date` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
+  `vote_count` int,
+  `user_post_id` int NOT NULL,
+  PRIMARY KEY (`user_id`, `user_post_id`),
+  INDEX(`user_id`),
+  INDEX(`user_post_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `pjr_comments_vote` (
   `user_id` int NOT NULL,
-  `vote` int NOT NULL,
-  `comments_id` int NOT NULL
+  `timestamp` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
+  `vote_type` int,
+  `comments_id` int NOT NULL,
+  PRIMARY KEY (`user_id`, `comments_id`),
+  INDEX(`user_id`),
+  INDEX(`comments_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_post` (`poster`);
@@ -43,10 +53,11 @@ ALTER TABLE `pjr_post` ADD FOREIGN KEY (`post_id`) REFERENCES `pjr_comments` (`p
 
 ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_comments` (`user_id`);
 
-ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_vote` (`user_id`);
+ALTER TABLE `pjr_post_vote` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_user` (`user_id`);
 
-ALTER TABLE `pjr_post` ADD FOREIGN KEY (`post_id`) REFERENCES `pjr_vote` (`post_id`);
+ALTER TABLE `pjr_post_vote` ADD FOREIGN KEY (`user_post_id`) REFERENCES `pjr_post` (`post_id`);
 
-ALTER TABLE `pjr_comments` ADD FOREIGN KEY (`comments_id`) REFERENCES `pjr_comments_vote` (`comments_id`);
+ALTER TABLE `pjr_comments_vote` ADD FOREIGN KEY (`comments_id`) REFERENCES `pjr_comments` (`comments_id`);
 
-ALTER TABLE `pjr_user` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_comments_vote` (`user_id`);
+ALTER TABLE `pjr_comments_vote` ADD FOREIGN KEY (`user_id`) REFERENCES `pjr_user` (`user_id`);
+
