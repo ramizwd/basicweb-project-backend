@@ -4,7 +4,6 @@ const { validationResult } = require('express-validator');
 const {
     getAllUsers,
     getUser,
-    insertUser,
     deleteUser,
     updateUser,
     updateUserProfile,
@@ -25,22 +24,7 @@ const user_get = async (req, res, next) => {
     res.json(user);
 };
 
-// Get user from the client side and inserting the new user to DB
-const user_post = async (req, res, next) => {
-    console.log('added user data', req.body);
-    const user = req.body;
-    const errors = validationResult(req);
 
-    // Get the validation errors from the request and return it as an array
-    if (!errors.isEmpty()) {
-        console.error('Post validation', errors.array());
-        const err = httpError('Data not valid', 400);
-        next(err);
-        return;
-    }
-    user.message = `user added with id: ${await insertUser(user, next)}`;
-    res.json(user);
-};
 
 // Get user Id from route parameter same with user info and send it to deleteUser
 const delete_user = async (req, res, next) => {
@@ -88,7 +72,6 @@ const checkToken = (req, res, next) => {
 module.exports = {
     user_get_all,
     user_get,
-    user_post,
     delete_user,
     user_update,
     checkToken,
