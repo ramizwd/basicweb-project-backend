@@ -67,7 +67,8 @@ const post_insert = async (req, res, next) => {
     if (
         post.type === 'image/png' ||
         post.type === 'image/jpg' ||
-        post.type === 'image/webp'
+        post.type === 'image/webp' ||
+        post.type === 'image/jpeg'
     ) {
         await makeThumbnail(req.file.path, req.file.filename);
     }
