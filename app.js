@@ -13,6 +13,14 @@ const passport = require('./utils/pass');
 const app = express();
 const port = 3000;
 
+// Check if code in production or localhost in .env file
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+if (process.env.NODE_ENV === 'production') {
+    require('./utils/production')(app, port);
+} else {
+    require('./utils/localhost')(app, 8000, port);
+}
+
 // allowing request from other origins/URLs
 app.use(cors());
 app.use(passport.initialize());
@@ -44,4 +52,4 @@ app.use((err, req, res, next) => {
 });
 
 // Constantly listen to port 3000
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+// app.listen(port, () => console.log(`Listening on port ${port}!`));
