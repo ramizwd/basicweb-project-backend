@@ -108,11 +108,23 @@ const updateUser = async (user, user_id, role, next) => {
 // Update user profile in database
 const updateUserProfile = async (user, user_id, role, next) => {
     let sql =
-        'UPDATE pjr_user SET username=?, description=? WHERE user_id=? AND user_id=?';
-    let params = [user.username, user.description, user.id, user_id];
+        'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=? AND user_id=?';
+    let params = [
+        user.username,
+        user.profile_picture,
+        user.description,
+        user.id,
+        user_id,
+    ];
     if (role === 0) {
-        sql = 'UPDATE pjr_user SET username=?, description=? WHERE user_id=?';
-        params = [user.username, user.description, user.id];
+        sql =
+            'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=?';
+        params = [
+            user.username,
+            user.profile_picture,
+            user.description,
+            user.id,
+        ];
     }
     try {
         const [rows] = await promisePool.execute(sql, params);
