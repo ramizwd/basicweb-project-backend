@@ -1,6 +1,6 @@
 'use strict';
 
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 const {
     getAllUsers,
     getUser,
@@ -8,8 +8,8 @@ const {
     updateUser,
     updateUserProfile,
 } = require('../models/userModel');
-const {httpError} = require('../utils/errors');
-const {makeThumbnail} = require('../utils/resize');
+const { httpError } = require('../utils/errors');
+const { makeThumbnail } = require('../utils/resize');
 
 // Get all users from the database and send them in a JSON formatted response.
 const user_get_all = async (req, res, next) => {
@@ -28,37 +28,38 @@ const user_get = async (req, res, next) => {
 // Get user Id from route parameter same with user info and send it to deleteUser
 const delete_user = async (req, res, next) => {
     const deleted = await deleteUser(
-    req.params.userId,
-    req.user.user_id,
-    req.user.role,
-    next,
+        req.params.userId,
+        req.user.user_id,
+        req.user.role,
+        next
     );
-    res.json({message: `User deleted: ${deleted}`});
+    res.json({ message: `User deleted: ${deleted}` });
 };
 
 // Get user and send them to updateUser function
 const user_update = async (req, res, next) => {
     const updated = await updateUser(
-    req.body,
-    req.user.user_id,
-    req.user.role,
-    next,
+        req.body,
+        req.user.user_id,
+        req.user.role,
+        next
     );
-    res.json({message: `User Updated: ${updated}`});
+    res.json({ message: `User Updated: ${updated}` });
 };
 
 // Get user and send their info to updateUserProfile
 const user_update_profile = async (req, res, next) => {
     const user = req.body;
-
-
+    user.profile_picture = req.file.filename;
+    console.log(user);
+    console.log(req.file);
     const updated = await updateUserProfile(
-    user,
-    req.user.user_id,
-    req.user.role,
-    next,
+        user,
+        req.user.user_id,
+        req.user.role,
+        next
     );
-    res.json({message: `User profile Updated: ${updated}`});
+    res.json({ message: `User profile Updated: ${updated}` });
 };
 
 // Check token
@@ -66,7 +67,7 @@ const checkToken = (req, res, next) => {
     if (!req.user) {
         next(new Error('token not valid'));
     } else {
-        res.json({user: req.user});
+        res.json({ user: req.user });
     }
 };
 
