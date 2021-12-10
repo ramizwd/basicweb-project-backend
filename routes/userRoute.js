@@ -2,6 +2,17 @@
 
 const express = require('express');
 const { body } = require('express-validator');
+const multer = require('multer');
+// Upload image or mp4 file types else throw an error
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.includes('image')) {
+        cb(null, true);
+    } else {
+        cb(null, false);
+        return cb(new Error('Only images formats allowed!'));
+    }
+};
+const upload = multer({ dest: './uploads', fileFilter });
 const router = express.Router();
 const {
     user_get_all,
@@ -28,6 +39,13 @@ router
     .delete(delete_user); // Delete user by id
 
 // Edit user profile route
-router.route('/profile').put(user_update_profile);
+router
+    .route('/profile')
+    .put(
+        upload.single('profile_picture'),
+        body('username').isLength({ min: 5 }),
+        body('description').isLength({ min: 10 }),
+        user_update_profile
+    );
 
 module.exports = router;

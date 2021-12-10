@@ -9,6 +9,7 @@ const {
     updateUserProfile,
 } = require('../models/userModel');
 const { httpError } = require('../utils/errors');
+const { makeThumbnail } = require('../utils/resize');
 
 // Get all users from the database and send them in a JSON formatted response.
 const user_get_all = async (req, res, next) => {
@@ -23,8 +24,6 @@ const user_get = async (req, res, next) => {
     console.log('get user by id', user);
     res.json(user);
 };
-
-
 
 // Get user Id from route parameter same with user info and send it to deleteUser
 const delete_user = async (req, res, next) => {
@@ -50,8 +49,12 @@ const user_update = async (req, res, next) => {
 
 // Get user and send their info to updateUserProfile
 const user_update_profile = async (req, res, next) => {
+    const user = req.body;
+    user.profile_picture = req.file.filename;
+    console.log(user);
+    console.log(req.file);
     const updated = await updateUserProfile(
-        req.body,
+        user,
         req.user.user_id,
         req.user.role,
         next
