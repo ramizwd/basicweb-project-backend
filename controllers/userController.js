@@ -1,6 +1,5 @@
 'use strict';
 
-const { validationResult } = require('express-validator');
 const {
     getAllUsers,
     getUser,
@@ -9,7 +8,6 @@ const {
     updateUserProfile,
 } = require('../models/userModel');
 const { httpError } = require('../utils/errors');
-const { makeThumbnail } = require('../utils/resize');
 
 // Get all users from the database and send them in a JSON formatted response.
 const user_get_all = async (req, res, next) => {
