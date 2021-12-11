@@ -106,7 +106,7 @@ const updateUser = async (user, user_id, role, next) => {
 };
 
 // Update user profile in database
-const updateUserProfile = async (user, user_id, role, next) => {
+const updateUserProfile = async (user, userId, role, next) => {
     let sql =
         'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=? AND user_id=?';
     let params = [
@@ -114,7 +114,7 @@ const updateUserProfile = async (user, user_id, role, next) => {
         user.profile_picture,
         user.description,
         user.id,
-        user_id,
+        userId,
     ];
     if (role === 0) {
         sql =
@@ -123,7 +123,7 @@ const updateUserProfile = async (user, user_id, role, next) => {
             user.username,
             user.profile_picture,
             user.description,
-            user.id,
+            userId,
         ];
     }
     try {

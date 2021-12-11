@@ -51,8 +51,8 @@ const getPost = async (postId, next) => {
 const getUserPosts = async (user, next) => {
     try {
         const [rows] = await promisePool.execute(
-            'SELECT post_id, poster, DATE, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS postername, pjr_user.profile_picture AS userpfp, COUNT( CASE WHEN vote_count = 1 THEN 1 END ) AS Upvote, COUNT( CASE WHEN vote_count = 0 THEN 1 ' +
-                'END) AS Downvote,(COUNT(CASE WHEN vote_count = 1 THEN 1 END) - COUNT(CASE WHEN vote_count = 0 THEN 1 END)) AS Votes FROM pjr_post INNER JOIN pjr_user ON poster = pjr_user.user_id LEFT JOIN pjr_post_vote ON pjr_post.post_id = pjr_post_vote.user_post_id WHERE poster = ? GROUP BY post_id ' +
+            'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS postername, pjr_user.profile_picture AS userpfp, COUNT( CASE WHEN vote_count = 1 THEN 1 END ) AS upvote, COUNT( CASE WHEN vote_count = 0 THEN 1 ' +
+                'END) AS downvote,(COUNT(CASE WHEN vote_count = 1 THEN 1 END) - COUNT(CASE WHEN vote_count = 0 THEN 1 END)) AS votes FROM pjr_post INNER JOIN pjr_user ON poster = pjr_user.user_id LEFT JOIN pjr_post_vote ON pjr_post.post_id = pjr_post_vote.user_post_id WHERE poster = ? GROUP BY post_id ' +
                 'ORDER BY pjr_post.post_id DESC',
             [user]
         );

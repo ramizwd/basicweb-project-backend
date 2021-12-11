@@ -55,7 +55,7 @@ const user_update_profile = async (req, res, next) => {
     console.log(req.file);
     const updated = await updateUserProfile(
         user,
-        req.user.user_id,
+        req.params.userId,
         req.user.role,
         next
     );
