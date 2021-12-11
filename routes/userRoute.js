@@ -40,7 +40,7 @@ router
 
 // Edit user profile route
 router
-    .route('/profile')
+    .route('/profile/:userId')
     .put(
         upload.single('profile_picture'),
         body('username').isLength({ min: 5 }),
