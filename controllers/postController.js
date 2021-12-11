@@ -7,6 +7,7 @@ const {
     insertPost,
     deletePost,
     getUserPosts,
+    searchPost,
 } = require('../models/postModel');
 const { httpError } = require('../utils/errors');
 const { makeThumbnail } = require('../utils/resize');
@@ -97,6 +98,12 @@ const post_delete = async (req, res, next) => {
     res.json({ message: `Post deleted: ${deleted}` });
 };
 
+// Send params to model
+const search_post = async (req, res, next) => {
+    const search = await searchPost(req.params.key, next);
+    res.json(search);
+};
+
 // Export functions
 module.exports = {
     post_get_all,
@@ -104,4 +111,5 @@ module.exports = {
     post_insert,
     post_delete,
     get_user_posts,
+    search_post,
 };
