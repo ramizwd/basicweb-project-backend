@@ -91,11 +91,11 @@ const insertPost = async (post, next) => {
 // and allow deletion and all the post votes only if poster and post id match
 const deletePost = async (postId, userId, role, next) => {
     let sql =
-        'DELETE pjr_post, pjr_post_vote FROM pjr_post INNER JOIN pjr_post_vote WHERE post_id = user_post_id AND post_id = ? AND poster = ?';
+        'DELETE pjr_post, pjr_post_vote FROM pjr_post LEFT JOIN pjr_post_vote ON post_id = user_post_id WHERE post_id = ? AND poster = ?';
     let params = [postId, userId];
     if (role === 0) {
         sql =
-            'DELETE pjr_post, pjr_post_vote FROM pjr_post INNER JOIN pjr_post_vote WHERE post_id = user_post_id AND post_id = ?';
+            'DELETE pjr_post, pjr_post_vote FROM pjr_post LEFT JOIN pjr_post_vote ON post_id = user_post_id WHERE post_id = ?';
         params = [postId];
     }
     try {
