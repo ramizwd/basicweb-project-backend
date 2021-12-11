@@ -53,11 +53,11 @@ const insertUser = async (user, next) => {
 // else check user id that's logged in and user's id to be deleted
 const deleteUser = async (userId, user_id, role, next) => {
     let sql =
-        'DELETE pjr_user, pjr_post_vote FROM pjr_user INNER JOIN pjr_post_vote WHERE pjr_user.user_id = pjr_post_vote.user_id AND pjr_user.user_id = ? AND pjr_user.user_id = ?';
+        'DELETE pjr_user, pjr_post_vote FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id WHERE pjr_user.user_id = ? AND pjr_user.user_id = ?';
     let params = [userId, user_id];
     if (role === 0) {
         sql =
-            'DELETE pjr_user, pjr_post_vote FROM pjr_user INNER JOIN pjr_post_vote WHERE pjr_user.user_id = pjr_post_vote.user_id and pjr_user.user_id = ?;';
+            'DELETE pjr_user, pjr_post_vote FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id WHERE pjr_user.user_id = 2';
         params = [userId];
     }
     try {
