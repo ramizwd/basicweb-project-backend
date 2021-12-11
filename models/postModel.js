@@ -109,6 +109,21 @@ const deletePost = async (postId, userId, role, next) => {
     }
 };
 
+// Get posts by its title name or any first letters
+const searchPost = async (key, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            `SELECT * FROM pjr_post WHERE title LIKE '${key}%'`
+        );
+        console.log('key word/letter', key);
+        return rows;
+    } catch (e) {
+        console.log('Model search posts');
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Export functions
 module.exports = {
     getAllPosts,
@@ -116,4 +131,5 @@ module.exports = {
     insertPost,
     deletePost,
     getUserPosts,
+    searchPost,
 };

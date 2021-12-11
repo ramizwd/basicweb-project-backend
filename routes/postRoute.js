@@ -23,6 +23,7 @@ const {
     post_insert,
     post_delete,
     get_user_posts,
+    search_post,
 } = require('../controllers/postController');
 const router = express.Router();
 
@@ -44,5 +45,8 @@ router
 
 // Route for getting user's posts
 router.route('/user/:userId').get(get_user_posts);
+
+// Search post by word/letter route
+router.route('/search/:key').get(search_post);
 
 module.exports = router;
