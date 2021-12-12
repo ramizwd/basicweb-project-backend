@@ -37,7 +37,7 @@ const voteInsert = async (user, vote, postId, next) => {
 // update vote if user want to change vote type
 const voteUpdate = async (vote, postId, next) => {
     try {
-        const [rows] = await promisePool.pool.execute(
+        const [rows] = await promisePool.execute(
             'UPDATE pjr_post_vote SET vote_count = ? WHERE user_id = ? AND user_post_id = ?',
             [vote.vote_count, vote.user_id, postId]
         );

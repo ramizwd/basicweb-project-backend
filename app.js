@@ -8,6 +8,7 @@ const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
 const authRoute = require('./routes/authRoute');
 const votes = require('./routes/voteRoute');
+const comments = require('./routes/commentRoute');
 const { httpError } = require('./utils/errors');
 const passport = require('./utils/pass');
 const app = express();
@@ -29,15 +30,16 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// User, Post, and Vote routes with passport auth middleware
+// User, Post, Vote, and Comment routes with passport auth middleware
 app.use('/auth', authRoute);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
-//the route to uploads and thumbnails
+app.use('/vote', votes);
+app.use('/comment', comments);
+
+// Route for uploads and thumbnails
 app.use(express.static('uploads'));
 app.use('/thumbnails', express.static('thumbnails'));
-
-app.use('/vote', votes);
 
 // route not found - error handling
 app.use((req, res, next) => {
@@ -50,6 +52,3 @@ app.use((err, req, res, next) => {
     const status = err.status || 500;
     res.status(status).send(err.message || 'internal error');
 });
-
-// Constantly listen to port 3000
-// app.listen(port, () => console.log(`Listening on port ${port}!`));
