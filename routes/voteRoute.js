@@ -15,7 +15,7 @@ router
     .route('/:postId')
     .post(post_vote)
     .put(update_vote)
-    .get(get_vote)
+    .get(get_vote) // unnecessary
     .delete(delete_vote);
 // Route for getting user's upvoted post
 router.route('/:userId/:postId').get(get_vote);
