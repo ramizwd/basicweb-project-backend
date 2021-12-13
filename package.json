@@ -1,7 +1,7 @@
 {
-    "name": "comments",
+    "name": "main",
     "version": "1.0.0",
-    "description": "comments system",
+    "description": "main branch",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/ramizwd/basicweb-project.git"
     },
-    "author": "Ramiz W.",
+    "author": "Ramiz W. | Johnkai Cortez",
     "license": "GNU-3",
     "bugs": {
         "url": "https://github.com/ramizwd/basicweb-project/issues"
