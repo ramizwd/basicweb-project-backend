@@ -33,8 +33,8 @@ router
     // Validate data and request Post request for inserting new post
     .post(
         upload.single('filename'),
-        body('title').isLength({ min: 5 }),
-        body('description').isLength({ min: 10 }),
+        body('title').isLength({ min: 3 }),
+        body('description').isLength({ min: 3 }),
         post_insert
     );
 
