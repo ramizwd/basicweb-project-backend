@@ -1,7 +1,7 @@
 {
-    "name": "main",
+    "name": "anonymous",
     "version": "1.0.0",
-    "description": "main branch",
+    "description": "Anonymous visitors",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/ramizwd/basicweb-project.git"
     },
-    "author": "Ramiz W. | Johnkai Cortez",
+    "author": "Ramiz W.",
     "license": "GNU-3",
     "bugs": {
         "url": "https://github.com/ramizwd/basicweb-project/issues"
