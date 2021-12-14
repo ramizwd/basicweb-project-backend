@@ -74,23 +74,21 @@ const deleteUser = async (userId, user_id, role, next) => {
 // Update any user and user role if mode role, else update only user's own info without editing role
 const updateUser = async (user, user_id, role, next) => {
     let sql =
-        'UPDATE pjr_user SET username=?, email=?, password=?, description=? WHERE user_id=? AND user_id=?';
+        'UPDATE pjr_user SET username=?, email=?, password=? WHERE user_id=? AND user_id=?';
     let params = [
         user.username,
         user.email,
         user.password,
-        user.description,
         user.id,
         user_id,
     ];
     if (role === 0) {
         sql =
-            'UPDATE pjr_user SET username=?, email=?, password=?, description=?, role=? WHERE user_id=?';
+            'UPDATE pjr_user SET username=?, email=?, password=?, role=? WHERE user_id=?';
         params = [
             user.username,
             user.email,
             user.password,
-            user.description,
             user.role,
             user.id,
         ];
