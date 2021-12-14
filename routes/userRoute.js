@@ -31,7 +31,9 @@ router
     .get(user_get_all)
 
     // Update user http request method
-    .put(user_update);
+    .put(  body('username').isLength({ min: 5 }),
+    body('password').isLength({ min: 5 }),
+    user_update);
 
 router
     .route('/:userId')
