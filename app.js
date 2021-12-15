@@ -6,6 +6,8 @@ const express = require('express');
 const cors = require('cors');
 const users = require('./routes/userRoute');
 const posts = require('./routes/postRoute');
+const postsAnon = require('./routes/postRoute');
+const usersAnon = require('./routes/userRoute');
 const authRoute = require('./routes/authRoute');
 const votes = require('./routes/voteRoute');
 const comments = require('./routes/commentRoute');
@@ -32,8 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // User, Post, Vote, and Comment routes with passport auth middleware
 app.use('/auth', authRoute);
+app.use('/user/anon', usersAnon);
 app.use('/user', passport.authenticate('jwt', { session: false }), users);
+app.use('/post/anon', postsAnon);
 app.use('/post', passport.authenticate('jwt', { session: false }), posts);
+
 app.use('/vote', votes);
 app.use('/comment', comments);
 
