@@ -13,9 +13,11 @@ const getAllPosts = async (next) => {
             'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS postername, pjr_user.profile_picture AS userpfp, ' +
                 'COUNT(case when vote_count = 1 then 1 end) as upvote, ' +
                 'COUNT(case when vote_count = 0 then 1 end) as downvote, ' +
-                '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_post ' +
+                '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes, ' +
+                'COUNT(comments_id) AS commentCount FROM pjr_post ' +
                 'INNER JOIN pjr_user ON poster = pjr_user.user_id ' +
-                'LEFT JOIN pjr_post_vote ON pjr_post.post_id= pjr_post_vote.user_post_id GROUP BY post_id ' +
+                'LEFT JOIN pjr_post_vote ON pjr_post.post_id = pjr_post_vote.user_post_id ' +
+                'LEFT JOIN pjr_comments ON pjr_post.post_id = pjr_comments.user_post_id GROUP BY post_id ' +
                 'ORDER BY pjr_post.post_id DESC'
         );
         return rows;
@@ -33,9 +35,11 @@ const getPost = async (postId, next) => {
             'SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS postername, pjr_user.profile_picture AS userpfp, ' +
                 'COUNT(case when vote_count = 1 then 1 end) as upvote, ' +
                 'COUNT(case when vote_count = 0 then 1 end) as downvote, ' +
-                '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_post ' +
+                '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes, ' +
+                'COUNT(comments_id) AS commentCount FROM pjr_post ' +
                 'INNER JOIN pjr_user ON poster = pjr_user.user_id ' +
-                'LEFT JOIN pjr_post_vote ON pjr_post.post_id= pjr_post_vote.user_post_id WHERE post_id = ?',
+                'LEFT JOIN pjr_post_vote ON pjr_post.post_id= pjr_post_vote.user_post_id ' +
+                'LEFT JOIN pjr_comments ON pjr_post.post_id = pjr_comments.user_post_id WHERE post_id = ? GROUP BY post_id ',
             [postId]
         );
         console.log('Get post by id', rows);
@@ -69,13 +73,7 @@ const insertPost = async (post, next) => {
     try {
         const [rows] = await promisePool.execute(
             `INSERT INTO pjr_post (title, filename, description, poster, file_type) VALUES (?,?,?,?,?)`,
-            [
-                post.title,
-                post.filename,
-                post.description,
-                post.poster,
-                post.type,
-            ]
+            [post.title, post.filename, post.description, post.poster, post.type]
         );
 
         console.log('Model insert new post', rows);
@@ -112,9 +110,7 @@ const deletePost = async (postId, userId, role, next) => {
 // Get posts by its title name or any first letters
 const searchPost = async (key, next) => {
     try {
-        const [rows] = await promisePool.execute(
-            `SELECT * FROM pjr_post WHERE title LIKE '${key}%'`
-        );
+        const [rows] = await promisePool.execute(`SELECT * FROM pjr_post WHERE title LIKE '${key}%'`);
         console.log('key word/letter', key);
         return rows;
     } catch (e) {
