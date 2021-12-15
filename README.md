@@ -1,3 +1,3 @@
 # Basic Concepts of Web Technology course project
 
-Backend portion
+Voting system for post comments
