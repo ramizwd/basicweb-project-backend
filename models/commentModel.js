@@ -23,6 +23,20 @@ const getAllComment = async (postId, next) => {
     }
 };
 
+const getPostCommentCount = async (postId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'SELECT COUNT(*) as commentCount FROM pjr_comments WHERE pjr_comments.user_post_id = ?',
+            [postId]
+        );
+        return rows[0];
+    } catch (e) {
+        console.error('error', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
 // Get a comment posted by a user
 const getComment = async (userId, postId, next) => {
     try {
@@ -92,4 +106,5 @@ module.exports = {
     commentUpdate,
     deleteComment,
     getAllComment,
+    getPostCommentCount,
 };
