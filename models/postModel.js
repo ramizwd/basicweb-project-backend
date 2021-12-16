@@ -69,13 +69,7 @@ const insertPost = async (post, next) => {
     try {
         const [rows] = await promisePool.execute(
             `INSERT INTO pjr_post (title, filename, description, poster, file_type) VALUES (?,?,?,?,?)`,
-            [
-                post.title,
-                post.filename,
-                post.description,
-                post.poster,
-                post.type,
-            ]
+            [post.title, post.filename, post.description, post.poster, post.type]
         );
 
         console.log('Model insert new post', rows);
@@ -113,7 +107,10 @@ const deletePost = async (postId, userId, role, next) => {
 const searchPost = async (key, next) => {
     try {
         const [rows] = await promisePool.execute(
-            `SELECT * FROM pjr_post WHERE title LIKE '${key}%'`
+            `SELECT post_id, poster, date, title, filename, file_type, pjr_post.description AS description, pjr_user.username AS ` +
+                `postername, pjr_user.profile_picture AS userpfp, COUNT(case when vote_count = 1 then 1 end) as upvote, COUNT(case when vote_count = 0 then 1 end) as downvote, ` +
+                `(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_post LEFT JOIN pjr_user ON poster = pjr_user.user_id ` +
+                `LEFT JOIN pjr_post_vote ON pjr_post.post_id= pjr_post_vote.user_post_id WHERE title LIKE '${key}%' GROUP BY title;`
         );
         console.log('key word/letter', key);
         return rows;

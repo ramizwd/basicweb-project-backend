@@ -6,6 +6,7 @@ const {
     commentUpdate,
     deleteComment,
     getAllComment,
+    getPostCommentCount,
 } = require('../models/commentModel');
 
 // Send post id to getAllComment
@@ -14,13 +15,14 @@ const get_all_comment = async (req, res, next) => {
     res.json(comments);
 };
 
+const get_all_comments_count = async (req, res, next) => {
+    const commentCount = await getPostCommentCount(req.params.postId, next);
+    res.json(commentCount);
+};
+
 // Send user id and post id from parameter to getComment
 const get_comment = async (req, res, next) => {
-    const comments = await getComment(
-        req.params.userId,
-        req.params.postId,
-        next
-    );
+    const comments = await getComment(req.params.userId, req.params.postId, next);
     res.json(comments);
 };
 
@@ -28,12 +30,7 @@ const get_comment = async (req, res, next) => {
 const post_comment = async (req, res, next) => {
     const user = req.body;
     const comment = req.body;
-    comment.message = `comment added to post with ID: ${await insertComment(
-        user,
-        comment,
-        req.params.postId,
-        next
-    )}`;
+    comment.message = `comment added to post with ID: ${await insertComment(user, comment, req.params.postId, next)}`;
     res.json(comment);
 };
 
@@ -58,4 +55,5 @@ module.exports = {
     update_comment,
     delete_comment,
     get_all_comment,
+    get_all_comments_count,
 };

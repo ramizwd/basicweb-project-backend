@@ -12,6 +12,7 @@ const get_vote = async (req, res, next) => {
     const vote = await getVote(req.params.userId, req.params.postId, next);
     res.json(vote);
 };
+
 // Send user, vote, and post id info to voteInsert function then get a JSON response from it
 const post_vote = async (req, res, next) => {
     const user = req.body;

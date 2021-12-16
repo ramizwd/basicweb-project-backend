@@ -2,6 +2,7 @@
 
 // Get required files
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
 const Strategy = require('passport-local').Strategy;
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
@@ -22,21 +23,17 @@ passport.use(
                     message: 'Incorrect email or password!',
                 });
             }
-            // if password don't match send an error
-            if (user.password !== password) {
+            // compare passwords with bcrypt if doesn't match throw an error
+            if (!(await bcrypt.compare(password, user.password))) {
                 return done(null, false, {
                     message: 'Incorrect email or password!',
                 });
             }
             // delete user password when returning the user and return user without the binary row type
             delete user.password;
-            return done(
-                null,
-                { ...user },
-                { message: 'Logged in successfully' }
-            );
+            return done(null, { ...user }, { message: 'Logged in successfully' });
         } catch (e) {
-            return done(err);
+            return done(e);
         }
     })
 );

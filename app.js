@@ -12,7 +12,8 @@ const authRoute = require('./routes/authRoute');
 const votes = require('./routes/voteRoute');
 const comments = require('./routes/commentRoute');
 const filter = require('./routes/filterRoute');
-const {httpError} = require('./utils/errors');
+const commentVotes = require('./routes/commentVoteRoute');
+const { httpError } = require('./utils/errors');
 const passport = require('./utils/pass');
 const app = express();
 const port = 3000;
@@ -33,16 +34,18 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// User, Post, Vote, and Comment routes with passport auth middleware
+// User and Post anonymous routes and logged in user's route with passport auth middleware
 app.use('/auth', authRoute);
 app.use('/user/anon', usersAnon);
 app.use('/user', passport.authenticate('jwt', {session: false}), users);
 app.use('/post/anon', postsAnon);
 app.use('/post', passport.authenticate('jwt', {session: false}), posts);
 
+// vote, comment, and comment's vote routes
 app.use('/vote', votes);
 app.use('/comment', comments);
 app.use('/filter', filter);
+app.use('/commentvote', commentVotes);
 
 // Route for uploads and thumbnails
 app.use(express.static('uploads'));
