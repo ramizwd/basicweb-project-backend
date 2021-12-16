@@ -14,7 +14,7 @@ router.get('/logout', logout);
 // Multer for handling 'multipart/form-data' file uploads, validate data, then send Post req to user_post.
 router.post(
     '/register',
-    body('username').isLength({ min: 2 }),
+    body('username').isLength({ min: 2, max: 18 }),
     body('email').isEmail(),
     body('password').matches('(?=.*[A-Z]).{8,}'),
     user_post

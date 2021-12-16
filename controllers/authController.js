@@ -14,6 +14,7 @@ const login = (req, res, next) => {
         console.log('local params', err, user, info);
         // If err true or no user found then send and error message and code
         if (err || !user) {
+            res.json({ message: 'Wrong password or email.' });
             next(httpError('email or password incorrect', 400));
             return;
         }
