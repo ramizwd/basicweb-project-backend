@@ -20,10 +20,7 @@ const getAllUsers = async (next) => {
 // Get user by id from database.
 const getUser = async (userId, next) => {
     try {
-        const [rows] = await promisePool.execute(
-            `SELECT * FROM pjr_user WHERE user_id = ?`,
-            [userId]
-        );
+        const [rows] = await promisePool.execute(`SELECT * FROM pjr_user WHERE user_id = ?`, [userId]);
         return rows[0];
     } catch (e) {
         console.error('error', e.message);
@@ -35,10 +32,11 @@ const getUser = async (userId, next) => {
 // Insert new user to database.
 const insertUser = async (user, next) => {
     try {
-        const [rows] = await promisePool.execute(
-            `INSERT INTO pjr_user (username, email, password) VALUES (?,?,?)`,
-            [user.username, user.email, user.password]
-        );
+        const [rows] = await promisePool.execute(`INSERT INTO pjr_user (username, email, password) VALUES (?,?,?)`, [
+            user.username,
+            user.email,
+            user.password,
+        ]);
 
         console.log('model insert user', rows);
         return rows.insertId;
@@ -73,12 +71,10 @@ const deleteUser = async (userId, user_id, role, next) => {
 
 // Update any user and user role if mode role, else update only user's own info without editing role
 const updateUser = async (user, user_id, role, next) => {
-    let sql =
-        'UPDATE pjr_user SET username=?, email=?, password=? WHERE user_id=? AND user_id=?';
+    let sql = 'UPDATE pjr_user SET username=?, email=?, password=? WHERE user_id=? AND user_id=?';
     let params = [user.username, user.email, user.password, user.id, user_id];
     if (role === 0) {
-        sql =
-            'UPDATE pjr_user SET username=?, email=?, password=?, role=? WHERE user_id=?';
+        sql = 'UPDATE pjr_user SET username=?, email=?, password=?, role=? WHERE user_id=?';
         params = [user.username, user.email, user.password, user.role, user.id];
     }
     try {
@@ -95,24 +91,11 @@ const updateUser = async (user, user_id, role, next) => {
 
 // Update user profile in database
 const updateUserProfile = async (user, userId, role, next) => {
-    let sql =
-        'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=? AND user_id=?';
-    let params = [
-        user.username,
-        user.profile_picture,
-        user.description,
-        user.id,
-        userId,
-    ];
+    let sql = 'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=? AND user_id=?';
+    let params = [user.username, user.profile_picture, user.description, user.id, userId];
     if (role === 0) {
-        sql =
-            'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=?';
-        params = [
-            user.username,
-            user.profile_picture,
-            user.description,
-            user.id,
-        ];
+        sql = 'UPDATE pjr_user SET username=?, profile_picture=?, description=? WHERE user_id=?';
+        params = [user.username, user.profile_picture, user.description, user.id];
     }
     try {
         const [rows] = await promisePool.execute(sql, params);
@@ -130,10 +113,7 @@ const updateUserProfile = async (user, userId, role, next) => {
 const getUserLogin = async (params) => {
     try {
         console.log(params);
-        const [rows] = await promisePool.execute(
-            'SELECT * FROM pjr_user WHERE email=?;',
-            params
-        );
+        const [rows] = await promisePool.execute('SELECT * FROM pjr_user WHERE email=?;', params);
         return rows;
     } catch (e) {
         console.log('error', e.message);
