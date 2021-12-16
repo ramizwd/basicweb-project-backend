@@ -30,10 +30,8 @@ router
     // Get request to user_get_all using express routing
     .get(user_get_all)
 
-    // Update user http request method
-    .put(  body('username').isLength({ min: 5 }),
-    body('password').isLength({ min: 5 }),
-    user_update);
+    // Update user http request method with express validator
+    .put(body('username').isLength({ min: 2, max: 18 }), body('password').matches('(?=.*[A-Z]).{8,}'), user_update);
 
 router
     .route('/:userId')
@@ -43,11 +41,6 @@ router
 // Edit user profile route
 router
     .route('/profile/:userId')
-    .put(
-        upload.single('profile_picture'),
-        body('username').isLength({ min: 5 }),
-        body('description').isLength({ min: 10 }),
-        user_update_profile
-    );
+    .put(upload.single('profile_picture'), body('username').isLength({ min: 2, max: 18 }), user_update_profile);
 
 module.exports = router;

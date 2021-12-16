@@ -6,10 +6,7 @@ const multer = require('multer');
 
 // Upload image or mp4 file types else throw an error
 const fileFilter = (req, file, cb) => {
-    if (
-        file.mimetype.includes('image') ||
-        file.mimetype.includes('video/mp4')
-    ) {
+    if (file.mimetype.includes('image') || file.mimetype.includes('video/mp4')) {
         cb(null, true);
     } else {
         cb(null, false);
@@ -33,8 +30,8 @@ router
     // Validate data and request Post request for inserting new post
     .post(
         upload.single('filename'),
-        body('title').isLength({ min: 3 }),
-        body('description').isLength({ min: 3 }),
+        body('title').isLength({ min: 2, max: 20 }),
+        body('description').isLength({ min: 5, max: 100 }),
         post_insert
     );
 
