@@ -49,15 +49,15 @@ const insertUser = async (user, next) => {
     }
 };
 
-// Check role if it's 0 (moderator) use the query that allows any user to be deleted with their votes
+// Check role if it's 0 (moderator) use the query that allows any user to be deleted with their votes and posts
 // else check user id that's logged in and user's id to be deleted
 const deleteUser = async (userId, user_id, role, next) => {
     let sql =
-        'DELETE pjr_user, pjr_post_vote FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id WHERE pjr_user.user_id = ? AND pjr_user.user_id = ?';
+        'DELETE pjr_user, pjr_post_vote, pjr_post FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id LEFT JOIN pjr_post ON pjr_user.user_id = pjr_post.poster WHERE pjr_user.user_id = ? AND pjr_user.user_id = ?';
     let params = [userId, user_id];
     if (role === 0) {
         sql =
-            'DELETE pjr_user, pjr_post_vote FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id WHERE pjr_user.user_id = 2';
+            'DELETE pjr_user, pjr_post_vote, pjr_post FROM pjr_user LEFT JOIN pjr_post_vote ON pjr_user.user_id = pjr_post_vote.user_id LEFT JOIN pjr_post ON pjr_user.user_id = pjr_post.poster WHERE pjr_user.user_id = ?';
         params = [userId];
     }
     try {
@@ -75,23 +75,11 @@ const deleteUser = async (userId, user_id, role, next) => {
 const updateUser = async (user, user_id, role, next) => {
     let sql =
         'UPDATE pjr_user SET username=?, email=?, password=? WHERE user_id=? AND user_id=?';
-    let params = [
-        user.username,
-        user.email,
-        user.password,
-        user.id,
-        user_id,
-    ];
+    let params = [user.username, user.email, user.password, user.id, user_id];
     if (role === 0) {
         sql =
             'UPDATE pjr_user SET username=?, email=?, password=?, role=? WHERE user_id=?';
-        params = [
-            user.username,
-            user.email,
-            user.password,
-            user.role,
-            user.id,
-        ];
+        params = [user.username, user.email, user.password, user.role, user.id];
     }
     try {
         const [rows] = await promisePool.execute(sql, params);

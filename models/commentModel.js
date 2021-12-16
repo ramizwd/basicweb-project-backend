@@ -8,10 +8,28 @@ const promisePool = pool.promise();
 const getAllComment = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            'SELECT * FROM pjr_comments WHERE pjr_comments.user_post_id = ?',
+            'SELECT pjr_comments.comments_id, `comment`, `user_post_id`, pjr_comments.user_id, ' +
+                'COUNT(case when vote_count = 1 then 1 end) as upvote, ' +
+                'COUNT(case when vote_count = 0 then 1 end) as downvote, ' +
+                '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_comments ' +
+                'LEFT JOIN pjr_comments_vote ON pjr_comments.comments_id = pjr_comments_vote.comments_id WHERE pjr_comments.user_post_id = ? GROUP BY pjr_comments.comments_id;',
             [postId]
         );
         return rows;
+    } catch (e) {
+        console.error('error', e.message);
+        const err = httpError('SQL error', 500);
+        next(err);
+    }
+};
+
+const getPostCommentCount = async (postId, next) => {
+    try {
+        const [rows] = await promisePool.execute(
+            'SELECT COUNT(*) as commentCount FROM pjr_comments WHERE pjr_comments.user_post_id = ?',
+            [postId]
+        );
+        return rows[0];
     } catch (e) {
         console.error('error', e.message);
         const err = httpError('SQL error', 500);
@@ -88,4 +106,5 @@ module.exports = {
     commentUpdate,
     deleteComment,
     getAllComment,
+    getPostCommentCount,
 };
