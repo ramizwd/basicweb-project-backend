@@ -3,14 +3,14 @@
 # Getting started
 - Clone the repository
 ```
-git clone  https://github.com/ramizwd/basicweb-project-backend.git
+git clone https://github.com/ramizwd/basicweb-project-backend.git
 ```
 - Install dependencies
 ```
-cd repository name
+cd basicweb-project-backend
 npm i
 ```
-- Build and run the project
+- Build and run the project with nodemon
 ```
 nodemon
 ```
