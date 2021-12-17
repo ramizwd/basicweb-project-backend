@@ -18,9 +18,7 @@ nodemon
 
 - Endpoints
 
-  Endpoint: 
-
-  swagger-ui  Endpoint : 
+  Endpoint: user, comment, auth, vote, post, thubnails, uploads, filter, post/anon, user/anon
 
 
 # Node JS
