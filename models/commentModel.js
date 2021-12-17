@@ -8,11 +8,11 @@ const promisePool = pool.promise();
 const getAllComment = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            'SELECT pjr_comments.comments_id, `comment`, `user_post_id`, pjr_comments.user_id, date_comments, ' +
+            'SELECT pjr_comments.comments_id, comment, user_post_id, pjr_comments.user_id, date_comments, ' +
                 'COUNT(case when vote_count = 1 then 1 end) as upvote, ' +
                 'COUNT(case when vote_count = 0 then 1 end) as downvote, ' +
                 '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_comments ' +
-                'LEFT JOIN pjr_comments_vote ON pjr_comments.comments_id = pjr_comments_vote.comments_id WHERE pjr_comments.user_post_id = ? GROUP BY pjr_comments.comments_id ORDER BY `pjr_comments`.`comments_id`  DESC',
+                'LEFT JOIN pjr_comments_vote ON pjr_comments.comments_id = pjr_comments_vote.comments_id WHERE pjr_comments.user_post_id = ? GROUP BY pjr_comments.comments_id ORDER BY pjr_comments.comments_id DESC',
             [postId]
         );
         return rows;
