@@ -40,7 +40,7 @@ The folder structure of this app is explained below:
 | **utils**                | Contain the utility scripts
 | app.js                   | Entry point to express app                        
 | package.json             | Contains npm dependencies    | tsconfig.json            
-                           | Config settings for compiling source code only written in TypeScript                          |
+                           | Config settings for compiling source code                          |
 
 
 
