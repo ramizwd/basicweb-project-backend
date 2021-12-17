@@ -8,7 +8,7 @@ const promisePool = pool.promise();
 const getAllComment = async (postId, next) => {
     try {
         const [rows] = await promisePool.execute(
-            'SELECT pjr_comments.comments_id, `comment`, `user_post_id`, pjr_comments.user_id, ' +
+            'SELECT pjr_comments.comments_id, `comment`, `user_post_id`, pjr_comments.user_id, date_comments, ' +
                 'COUNT(case when vote_count = 1 then 1 end) as upvote, ' +
                 'COUNT(case when vote_count = 0 then 1 end) as downvote, ' +
                 '(COUNT(case when vote_count = 1 then 1 end) - COUNT(case when vote_count = 0 then 1 end)) as votes FROM pjr_comments ' +
