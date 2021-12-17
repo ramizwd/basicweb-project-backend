@@ -18,7 +18,7 @@ nodemon
 
 - Endpoints
 
-  Endpoint: user, comment, auth, vote, post, thubnails, uploads, filter, post/anon, user/anon
+  user, comment, auth, vote, post, thubnails, uploads, filter, post/anon, user/anon
 
 
 # Node JS
