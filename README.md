@@ -39,7 +39,7 @@ The folder structure of this app is explained below:
 | **thumbnails**           | Contain all the imageds that come from uploads then handled by Sharp                           |
 | **utils**                | Contain the utility scripts
 | app.js                   | Entry point to express app                        
-| package.json             | Contains npm dependencies    | tsconfig.json            
+| package.json             | Contains npm dependencies    | 
                            | Config settings for compiling source code                          |
 
 
