@@ -34,13 +34,10 @@ The folder structure of this app is explained below:
 | **controllers**          | Controllers define functions to serve various express                                       |
 | **node_modules**         | Contains all npm dependencies                                                                |
 | **database**             | Contains connection pool script                                                               |
-| **modules**              | Modules for all the routes 
-| **routes**               | Contain all express routes, separated by module/area of application  
+| **modules**              | Modules for all the routes                                                     |
+| **routes**               | Contain all express routes, separated by module/area of application  |
 | **thumbnails**           | Contain all the imageds that come from uploads then handled by Sharp                           |
-| **utils**                | Contain the utility scripts
-| app.js                   | Entry point to express app                        
-| package.json             | Contains npm dependencies    | 
+| **utils**                | Contain the utility scripts                                                  |
+| app.js                   | Entry point to express app                                   |                 
+| package.json             | Contains npm dependencies                                       | 
                            | Config settings for compiling source code                          |
-
-
-
